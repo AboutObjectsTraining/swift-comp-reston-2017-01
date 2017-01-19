@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F06B25B1E314C4800503EDC /* AddBook.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F06B25A1E314C4800503EDC /* AddBook.storyboard */; };
+		3F06B25D1E314D3C00503EDC /* EditBook.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F06B25C1E314D3C00503EDC /* EditBook.storyboard */; };
 		3F7359CF1E30318B007042D1 /* ReadingListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7359CE1E30318B007042D1 /* ReadingListController.swift */; };
 		3F7359D11E3108A7007042D1 /* MyMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F7359D01E3108A7007042D1 /* MyMain.storyboard */; };
 		3FBB3FE81E300ED900673035 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBB3FE71E300ED900673035 /* AppDelegate.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F06B25A1E314C4800503EDC /* AddBook.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddBook.storyboard; sourceTree = "<group>"; };
+		3F06B25C1E314D3C00503EDC /* EditBook.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditBook.storyboard; sourceTree = "<group>"; };
 		3F7359CE1E30318B007042D1 /* ReadingListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadingListController.swift; sourceTree = "<group>"; };
 		3F7359D01E3108A7007042D1 /* MyMain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MyMain.storyboard; sourceTree = "<group>"; };
 		3FBB3FE41E300ED900673035 /* ReadingList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReadingList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +86,8 @@
 				3FBB3FE71E300ED900673035 /* AppDelegate.swift */,
 				3F7359CE1E30318B007042D1 /* ReadingListController.swift */,
 				3F7359D01E3108A7007042D1 /* MyMain.storyboard */,
+				3F06B25C1E314D3C00503EDC /* EditBook.storyboard */,
+				3F06B25A1E314C4800503EDC /* AddBook.storyboard */,
 				3FBB3FEB1E300ED900673035 /* Main.storyboard */,
 				3FBB3FEE1E300ED900673035 /* Assets.xcassets */,
 				3FBB3FF01E300ED900673035 /* LaunchScreen.storyboard */,
@@ -185,7 +191,9 @@
 				3FBB3FF21E300ED900673035 /* LaunchScreen.storyboard in Resources */,
 				3F7359D11E3108A7007042D1 /* MyMain.storyboard in Resources */,
 				3FBB3FEF1E300ED900673035 /* Assets.xcassets in Resources */,
+				3F06B25B1E314C4800503EDC /* AddBook.storyboard in Resources */,
 				3FBB3FED1E300ED900673035 /* Main.storyboard in Resources */,
+				3F06B25D1E314D3C00503EDC /* EditBook.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
