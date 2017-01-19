@@ -80,16 +80,19 @@ extension Person: Likeable
 // MARK: - Person's Friendable Methods
 extension Person
 {
-    convenience init(_ firstName: String, _ lastName: String, _ friendID: Int) {
-        self.init(firstName: firstName, lastName: lastName)
-        self.friendID = friendID
-    }
+//    convenience init(_ firstName: String, _ lastName: String, _ friendID: Int) {
+//        self.init(firstName: firstName, lastName: lastName)
+//        self.friendID = friendID
+//    }
     
     func friend(_ newFriend: Friendable) {
         friends.append(newFriend)
     }
     
     func unfriend(_ oldFriend: Friendable) {
+//        let f = friends.filter { $0 != oldFriend }
+//        print(f)
+        
         friends = friends.filter { $0 != oldFriend }
     }
     

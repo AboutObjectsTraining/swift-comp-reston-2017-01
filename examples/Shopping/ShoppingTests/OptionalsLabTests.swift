@@ -13,6 +13,7 @@ class OptionalsLabTests: XCTestCase
         
         customer.address = Address(street: "2 Elm", city: "Elmville", state: "VA")
         print(customer)
+        
         customer.address?.street2 = "Apt B"
         print(customer)
     }

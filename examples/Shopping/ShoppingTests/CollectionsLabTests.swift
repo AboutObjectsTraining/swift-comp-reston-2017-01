@@ -57,16 +57,6 @@ class CollectionsLabTests: XCTestCase
         for (index, item) in items.enumerated() {
             print("item at index \(index) is \(item)")
         }
-        
-//        let names = [ "Jane", "Bill", "Jan" ]
-//
-//for (index, name) in names.enumerated() {
-//    print("name \(index + 1) is \(name)")
-//}
-//// name 1 is Jane
-//// name 2 is Bill
-//// name 3 is Jan
-        
     }
     
     func testDictionary() {

@@ -3,6 +3,14 @@
 //
 import XCTest
 
+extension Person
+{
+    convenience init(_ firstName: String, _ lastName: String, _ friendID: Int) {
+        self.init(firstName: firstName, lastName: lastName)
+        self.friendID = friendID
+    }
+}
+
 // Note: we need to specify the array type here because otherwise the
 // Swift runtime doesn't see the type [Persons] as a match for [Friendable].
 //
@@ -19,6 +27,17 @@ let persons = [
 
 class Lab3Tests: XCTestCase
 {
+    func testOptionals() {
+        let s1: Optional<String> = "Foo"
+        print(s1)
+        
+        let s2: String? = "Bar"
+        print(s2)
+        
+        let s3: String? = nil
+        print (s3)
+    }
+    
     func testLikes() {
         let fred: Person = persons[0]
         fred.like()
