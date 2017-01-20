@@ -12,7 +12,7 @@
         <!--Add Book-->
         <scene sceneID="rLK-eR-As6">
             <objects>
-                <tableViewController id="npK-H1-FN6" sceneMemberID="viewController">
+                <tableViewController id="npK-H1-FN6" customClass="AddBookController" customModule="ReadingList" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="9Zl-5a-EwJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -127,15 +127,21 @@
                     <navigationItem key="navigationItem" title="Add Book" id="mfJ-XA-2AW">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="faf-Xl-mpz">
                             <connections>
-                                <segue destination="iP2-0w-Swz" kind="unwind" unwindAction="cancelAddingWithSegue:" id="Rxr-Y2-9kq"/>
+                                <segue destination="iP2-0w-Swz" kind="unwind" identifier="Cancel" unwindAction="cancelAddingWithSegue:" id="Rxr-Y2-9kq"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="3ml-4o-vEg">
                             <connections>
-                                <segue destination="iP2-0w-Swz" kind="unwind" unwindAction="doneAddingWithSegue:" id="WDH-iI-vLP"/>
+                                <segue destination="iP2-0w-Swz" kind="unwind" identifier="Done" unwindAction="doneAddingWithSegue:" id="WDH-iI-vLP"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="firstNameField" destination="Ra1-1f-rRg" id="1I5-E6-Per"/>
+                        <outlet property="lastNameField" destination="QD0-lh-nIT" id="nWw-kJ-DMY"/>
+                        <outlet property="titleField" destination="QEq-Q0-2FP" id="ULF-de-37T"/>
+                        <outlet property="yearField" destination="yJZ-xO-3qG" id="jDU-Ni-Zxn"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mq1-OU-72p" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="iP2-0w-Swz" userLabel="Exit" sceneMemberID="exit"/>
