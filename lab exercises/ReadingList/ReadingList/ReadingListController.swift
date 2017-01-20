@@ -6,15 +6,30 @@ class ReadingListController: UITableViewController
     var readingList: ReadingList?
     
     override func viewDidLoad() {
+        loadReadingList()
+        configureNavigationItem()
+    }
+    
+    func configureNavigationItem() {
+        navigationItem.leftBarButtonItem = editButtonItem
+    }
+    
+    func loadReadingList() {
         readingListStore = ReadingListStore("BooksAndAuthors")
-        // TODO: move to a concurrent queue
-        readingList = readingListStore?.fetchReadingList()
-        print(readingList ?? "Unable to load reading list.")
+        
+        DispatchQueue.global().async {
+            self.readingList = self.readingListStore?.fetchReadingList()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func save() {
-        guard let readingList = readingList else { return }
-        readingListStore?.saveReadingList(readingList)
+        DispatchQueue.global(qos: .userInteractive).async {
+            guard let readingList = self.readingList else { return }
+            self.readingListStore?.saveReadingList(readingList)
+        }
     }
     
     @IBAction func doneEditing(segue: UIStoryboardSegue) {
@@ -53,6 +68,24 @@ class ReadingListController: UITableViewController
 
 extension ReadingListController
 {
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
+    {
+        guard let book = readingList?.books[sourceIndexPath.row] else { return }
+        readingList?.books.remove(at: sourceIndexPath.row)
+        readingList?.books.insert(book, at: destinationIndexPath.row)
+        save()
+        
+        tableView.moveRow(at: sourceIndexPath, to: destinationIndexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
+    {
+        guard editingStyle == .delete else { return }
+        readingList?.books.remove(at: indexPath.row)
+        save()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return readingList?.books.count ?? 0
     }
