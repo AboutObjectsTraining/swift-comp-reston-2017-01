@@ -4,27 +4,29 @@
 //
 import Foundation
 
-public let firstNameKey = "firstName"
-public let lastNameKey = "lastName"
-
 open class Author: ModelObject
 {
+    public static let firstNameKey = "firstName"
+    public static let lastNameKey = "lastName"
+    public static let unknown = "Unknown"
+    
     open var firstName: String?
     open var lastName: String?
     
     open var fullName: String {
-        guard let firstName = firstName, let lastName = lastName else {
-            return ""
+        switch (firstName, lastName) {
+        case (nil, nil):          return Author.unknown
+        case let (nil, last?):    return last
+        case let (first?, nil):   return first
+        case let (first?, last?): return first + " " + last
         }
-        return (firstName + " " + lastName).trimmingCharacters(in: CharacterSet.whitespaces)
     }
     
     open override var description: String {
-        return fullName
+        return "\(fullName)"
     }
     
-    override class func keys() -> [String]
-    {
-        return ["firstName", "lastName"]
+    open override class var keys: [String] {
+        return [firstNameKey, lastNameKey]
     }
 }

@@ -8,9 +8,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidFinishLaunching(_ application: UIApplication) {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = UIColor.lightGray
-        
         window?.rootViewController = CoolViewController()
-        
         window?.makeKeyAndVisible()
     }
 }

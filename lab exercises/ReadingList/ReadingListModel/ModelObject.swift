@@ -6,15 +6,7 @@ import Foundation
 
 open class ModelObject: NSObject
 {
-    // TODO: Ideally, keys would be a class variable, but that feature
-    // isn't yet supported in the current version of Swift.
-    //
-    //     class let keys = []
-    //
-    class func keys() -> [String]
-    {
-        return []
-    }
+    open class var keys: [String] { return [] }
     
     public required init(dictionary: [String: Any])
     {
@@ -24,6 +16,6 @@ open class ModelObject: NSObject
     
     open func dictionaryRepresentation() -> [String: Any]
     {
-        return self.dictionaryWithValues(forKeys: type(of: self).keys()) as [String : Any]
+        return self.dictionaryWithValues(forKeys: type(of: self).keys) as [String : Any]
     }
 }

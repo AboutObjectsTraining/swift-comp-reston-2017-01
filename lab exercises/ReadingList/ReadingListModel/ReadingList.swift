@@ -4,15 +4,11 @@
 //
 import Foundation
 
-let booksKey = "books"
-
-protocol PropertyKeys
-{
-    var all: [String] { get }
-}
-
 open class ReadingList: ModelObject
 {    
+    public static let titleKey = "title"
+    public static let booksKey = "books"
+    
     open var title = ""
     open var books = [Book]()
     
@@ -24,29 +20,23 @@ open class ReadingList: ModelObject
         return s
     }
     
-    override class func keys() -> [String]
-    {
+    open override class var keys: [String] {
         return [titleKey, booksKey]
     }
     
-    open override func setValue(_ value: Any?, forKey key: String)
-    {
-        var mappedValue: Any?
-        if key == booksKey, let dicts = value as? [[String: Any]] {
-            mappedValue = dicts.map { Book(dictionary: $0) }
+    open override func setValue(_ value: Any?, forKey key: String) {
+        var books: [Book]?
+        if key == ReadingList.booksKey, let dicts = value as? [[String: Any]] {
+            books = dicts.map { Book(dictionary: $0) }
         }
-        
-        super.setValue(mappedValue ?? value, forKey: key)
+        super.setValue(books ?? value, forKey: key)
     }
     
-    open override func dictionaryRepresentation() -> [String: Any]
-    {
+    open override func dictionaryRepresentation() -> [String: Any] {
         var dict = super.dictionaryRepresentation()
-
-        if let books = dict[booksKey] as? [ModelObject] {
-            dict[booksKey] = books.map { $0.dictionaryRepresentation() }
+        if let books = dict[ReadingList.booksKey] as? [ModelObject] {
+            dict[ReadingList.booksKey] = books.map { $0.dictionaryRepresentation() }
         }
-        
         return dict
     }
 }

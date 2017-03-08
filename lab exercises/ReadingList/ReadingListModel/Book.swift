@@ -4,44 +4,37 @@
 //
 import Foundation
 
-let titleKey = "title"
-let yearKey = "year"
-let authorKey = "author"
-
-let unknown = "unknown"
-
 open class Book: ModelObject
 {
+    public static let titleKey = "title"
+    public static let yearKey = "year"
+    public static let authorKey = "author"
+    
     open var title: String?
     open var year: String?
     open var author: Author?
     
     open override var description: String {
-        return "\(title), \(year), \(author?.description ?? unknown)"
+        return "title: \(title ?? "nil"), year: \(year ?? "nil"), author: \(author?.description ?? "nil")"
     }
     
-    override class func keys() -> [String]
-    {
+    open override class var keys: [String] {
         return [titleKey, yearKey, authorKey]
     }
     
-    public required init(dictionary: [String : Any])
-    {
+    public required init(dictionary: [String : Any]) {
         var bookInfo = dictionary
-        if let authorInfo = dictionary[authorKey] as? [String: Any] {
-            bookInfo[authorKey] = Author(dictionary: authorInfo)
+        if let authorInfo = dictionary[Book.authorKey] as? [String: Any] {
+            bookInfo[Book.authorKey] = Author(dictionary: authorInfo)
         }
-        
         super.init(dictionary: bookInfo)
     }
     
-    open override func dictionaryRepresentation() -> [String: Any]
-    {
+    open override func dictionaryRepresentation() -> [String: Any] {
         var dict = super.dictionaryRepresentation()
-        if let author = dict[authorKey] as? Author {
-            dict[authorKey] = author.dictionaryRepresentation() as Any?
+        if let author = dict[Book.authorKey] as? Author {
+            dict[Book.authorKey] = author.dictionaryRepresentation() as Any?
         }
-        
         return dict
     }
 }

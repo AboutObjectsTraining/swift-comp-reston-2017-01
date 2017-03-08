@@ -1,5 +1,8 @@
 import UIKit
 
+private let fNameKey = Author.firstNameKey
+private let lNameKey = Author.lastNameKey
+
 class AddBookController: UITableViewController
 {
     var completion: ((Book) -> Void)?
@@ -10,16 +13,21 @@ class AddBookController: UITableViewController
     @IBOutlet weak var lastNameField: UITextField!
     
     var book: Book {
-        return Book(dictionary: [titleKey: titleField.text ?? "",
-                                 yearKey: yearField.text ?? "",
-                                 authorKey: [firstNameKey: firstNameField.text ?? "",
-                                             lastNameKey: lastNameField.text ?? ""]])
+        return Book(dictionary: [Book.titleKey: titleField.text.any,
+                                 Book.yearKey: yearField.text.any,
+                                 Book.authorKey: [fNameKey: firstNameField.text.any,
+                                                  lNameKey: lastNameField.text.any]])
     }
-    
-
+        
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Done" {
             completion?(book)
         }
     }
 }
+
+extension Optional
+{
+    var any: Any { return self ?? NSNull() }
+}
+

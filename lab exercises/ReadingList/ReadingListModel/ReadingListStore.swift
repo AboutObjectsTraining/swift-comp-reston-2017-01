@@ -2,60 +2,71 @@
 // Copyright (C) 2014 About Objects, Inc. All Rights Reserved.
 // See LICENSE.txt for this example's licensing information.
 //
-
 import Foundation
 
-let documentsURLs = FileManager.default.urls(
-    for: FileManager.SearchPathDirectory.documentDirectory, in:
-    FileManager.SearchPathDomainMask.userDomainMask)
-
-
-// MARK: - File Utilities
-
-func fileURLForDocument(_ name: String, type: String) -> URL
-{
-    precondition(!documentsURLs.isEmpty, "Documents directory must exist.")
-    
-    let fileURL = documentsURLs.first!
-    return fileURL.appendingPathComponent(name).appendingPathExtension(type)
-}
-
-
-// MARK: - ReadingListStore
-
+/// Encapsulates the storage for serialized instances of `ReadingList`, and 
+/// their nested `Book` and `Author` objects. Instances of these types are
+/// serialized by obtaining dictionaries of their keys and values, and writing
+/// the resulting dictionaries to the file system in plist format.
 open class ReadingListStore : NSObject
 {
-    let storeType = "plist"
-    let storeName: String
-    let documentURL: URL
+    /// File extension of the store file
+    public let storeType = "plist"
+    /// Name of the store file
+    public let storeName: String
+    /// URL of the store file in the Documents directory.
+    public let documentUrl: URL
+    /// URL of the store file in the app bundle
+    lazy var bundleUrl: URL? = Bundle.main.url(forResource: self.storeName, withExtension: self.storeType)
+    /// `true` if a file exists at the path defined by `documentUrl`
+    lazy var documentExists: Bool = FileManager.default.fileExists(atPath: self.documentUrl.path)
+    /// URL of the store file in either the Documents directory if it exists there, or the app bundle
+    lazy var url: URL? = self.documentExists ? self.documentUrl : self.bundleUrl
+    /// A `ReadingList` instance initialized with the contents of the store file
+    lazy var fetchedReadingList: ReadingList = self.fetch()
     
-    public init(_ storeName: String)
-    {
+    lazy var unableToLoadMessage: String = "Unable to load \(self.storeName) with \(self.storeType) at URL \(self.url)"
+    lazy var missingDocumentMessage: String = "Unable to locate \(self.storeName) in \(self.documentExists ? self.documentUrl.description : "app bundle")"
+    
+    /// Initializes a store with the provided name.
+    /// - Parameter storeName: Name of the store file
+    public init(_ storeName: String) {
         self.storeName = storeName
-        documentURL = fileURLForDocument(storeName, type: storeType)
+        documentUrl = FileManager.fileURLForDocument(name: storeName, type: storeType)
         super.init()
     }
     
-    open func fetchReadingList() -> ReadingList
-    {
-        if FileManager.default.fileExists(atPath: documentURL.path),
-            let dict = NSDictionary(contentsOf: documentURL) as? [String: AnyObject]  {
-                return ReadingList(dictionary: dict)
-        }
-        
-        let bundle = Bundle(for: ReadingListStore.self)
-        guard let URL = bundle.url(forResource: storeName, withExtension: storeType) else {
-            fatalError("Unable to locate \(storeName) in app bundle")
-        }
-        guard let dict = NSDictionary(contentsOf: URL) as? [String: AnyObject] else {
-            fatalError("Unable to load \(storeName) with bundle URL \(URL)")
-        }
-        return ReadingList(dictionary: dict)
+    /// Saves the provided reading list to a file in the Documents directory.
+    /// - Parameter readingList: The instance of `ReadingList` to save
+    open func save(readingList: ReadingList) {
+        let dict = readingList.dictionaryRepresentation() as NSDictionary
+        dict.write(to: documentUrl, atomically: true)
     }
     
-    open func saveReadingList(_ readingList: ReadingList)
-    {
-        let dict = readingList.dictionaryRepresentation() as NSDictionary
-        dict.write(to: documentURL, atomically: true)
+    /// Returns an instance of `ReadingList` initialized with the contents of
+    /// a plist file. Nested objects include an array of `Book` instances, each
+    /// with a nested `Author`.
+    /// - Returns: A fully populated `ReadingList`
+    open func fetch() -> ReadingList {
+        guard let url = url else { fatalError(missingDocumentMessage) }
+        guard let dict = NSDictionary(contentsOf: url) as? [String: AnyObject] else { fatalError(unableToLoadMessage) }
+        return ReadingList(dictionary: dict) // Initializes graph of model objects
+    }
+}
+
+
+extension FileManager
+{
+    /// Returns a file URL relative to the Documents directory of a file with
+    /// the given name and type. Does not check whether the file exists.
+    /// - Parameters:
+    ///   - name: Name of the file (minus the extension)
+    ///   - type: The file's type
+    /// - Returns: A file URL
+    class func fileURLForDocument(name: String, type: String) -> URL {
+        let documentsUrls = self.default.urls(for: SearchPathDirectory.documentDirectory,
+                                              in: SearchPathDomainMask.userDomainMask)
+        guard let fileURL = documentsUrls.first else { fatalError("Documents directory must exist.") }
+        return fileURL.appendingPathComponent(name).appendingPathExtension(type)
     }
 }

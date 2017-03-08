@@ -3,7 +3,7 @@ import UIKit
 class ReadingListController: UITableViewController
 {
     var readingListStore: ReadingListStore?
-    var readingList: ReadingList?
+    lazy var readingList: ReadingList? = self.readingListStore?.fetchedReadingList
     
     override func viewDidLoad() {
         loadReadingList()
@@ -17,8 +17,8 @@ class ReadingListController: UITableViewController
     func loadReadingList() {
         readingListStore = ReadingListStore("BooksAndAuthors")
         
-        DispatchQueue.global().async {
-            self.readingList = self.readingListStore?.fetchReadingList()
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.readingList = self.readingListStore?.fetchedReadingList
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -28,7 +28,7 @@ class ReadingListController: UITableViewController
     func save() {
         DispatchQueue.global(qos: .userInteractive).async {
             guard let readingList = self.readingList else { return }
-            self.readingListStore?.saveReadingList(readingList)
+            self.readingListStore?.save(readingList: readingList)
         }
     }
     
